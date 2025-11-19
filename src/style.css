@@ -1,0 +1,365 @@
+:root {
+  --cover-width: 400px;
+  --cover-height: 600px;
+  --spine-width: 20px;
+  --row-height: 24px;
+}
+
+html {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  background-color: #333;
+
+  perspective: 1500px;
+  perspective-origin: 50% 50%;
+  overflow: hidden;
+}
+
+header,
+h1,
+h2,
+h3 {
+  font-family: 'Playfair Display', serif;
+}
+
+main {
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
+.cards {
+  position: relative;
+  width: 100%;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.card {
+  height: 100vh;
+  width: 100%;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+
+  view-timeline-name: --page-scroll;
+  view-timeline-axis: block;
+}
+
+.page {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: var(--cover-width);
+  height: var(--cover-height);
+
+  margin-top: calc(var(--cover-height) / -2);
+  margin-left: 0;
+
+  transform-origin: left center;
+  transform-style: preserve-3d;
+
+  transform: rotateY(0deg);
+
+  animation-name: flip-book, z-index-flip;
+  animation-timeline: --page-scroll;
+  animation-range: exit 0% exit 100%;
+  animation-fill-mode: both;
+
+  z-index: calc(var(--total) - var(--i));
+}
+
+@keyframes z-index-flip {
+
+  0%,
+  49% {
+    z-index: calc(var(--total) - var(--i));
+  }
+
+  51%,
+  100% {
+    z-index: var(--i);
+  }
+}
+
+@keyframes flip-book {
+  0% {
+    transform: rotateY(0deg);
+  }
+
+  100% {
+    transform: rotateY(-180deg);
+  }
+}
+
+.front,
+.back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 0 16px 16px 0;
+  overflow: hidden;
+  background-color: #fdfbf7;
+  box-sizing: border-box;
+}
+
+.front {
+  z-index: 2;
+  border-left: 4px solid #d4b483;
+  box-shadow: inset 10px 0 20px rgba(0, 0, 0, 0.05), 5px 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.back {
+  transform: rotateY(180deg);
+  z-index: 1;
+
+  border-right: 4px solid #d4b483;
+  border-left: none;
+  border-radius: 16px 0 0 16px;
+
+  box-shadow: inset -10px 0 20px rgba(0, 0, 0, 0.05), -5px 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Ruled Page (Right Side / Front) */
+.ruled-page {
+  background-image: repeating-linear-gradient(#fdfbf7 0px,
+      #fdfbf7 calc(var(--row-height) - 1px),
+      #a0c0e0 var(--row-height));
+  padding: var(--row-height) 32px var(--row-height) 40px;
+  overflow-y: auto;
+}
+
+.ruled-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 32px;
+  bottom: 0;
+  width: 2px;
+  background-color: #e0a0a0;
+}
+
+/* Plain Page (Left Side / Back) */
+.plain-page {
+  background-color: #fdfbf7;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: center;
+}
+
+.recipe-intro h2 {
+  font-size: 2rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: #2c3e50;
+  border-bottom: 2px solid #e0c097;
+  padding-bottom: 0.5rem;
+}
+
+.recipe-intro img {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  mix-blend-mode: multiply;
+}
+
+.recipe-content h3 {
+  margin-top: var(--row-height);
+  margin-bottom: 0;
+  color: #8b5e3c;
+  font-size: 1rem;
+  line-height: var(--row-height);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+.ingredients {
+  padding-left: 1.2rem;
+  margin: 0;
+  font-size: 1rem;
+  line-height: var(--row-height);
+}
+
+.instructions {
+  text-align: justify;
+  margin: 0;
+  font-size: 1rem;
+  line-height: var(--row-height);
+}
+
+.cover-front {
+  background-color: #2c3e50;
+  color: #ecf0f1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border-left: 12px solid #1a252f;
+  box-shadow: inset 10px 0 30px rgba(0, 0, 0, 0.5);
+}
+
+.cover-front h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  border: 4px double #ecf0f1;
+  padding: 1rem;
+}
+
+.cover-front p {
+  font-style: italic;
+  letter-spacing: 2px;
+}
+
+/* Navigation Controls */
+.book-controls {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 20px;
+  z-index: 1000;
+}
+
+.book-controls button {
+  padding: 10px 20px;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  color: #ecf0f1;
+  background-color: #2c3e50;
+  border: 2px solid #ecf0f1;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.book-controls button:hover {
+  background-color: #34495e;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4);
+}
+
+.book-controls button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Mobile Layout */
+@media (max-width: 600px) {
+  body {
+    perspective: none;
+    overflow: auto;
+    background-color: #f0f0f0;
+  }
+
+  main {
+    overflow: visible;
+    height: auto;
+    scroll-snap-type: none;
+  }
+
+  .cards {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .card {
+    height: auto;
+    width: 100%;
+    scroll-snap-align: none;
+    view-timeline: none;
+  }
+
+  .page {
+    position: static;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    transform: none;
+    animation: none;
+    display: flex;
+    flex-direction: column;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+
+  .front,
+  .back {
+    position: static;
+    width: 100%;
+    height: auto;
+    transform: none;
+    backface-visibility: visible;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 20px;
+  }
+
+  .front {
+    order: 2;
+  }
+
+  .back {
+    order: 1;
+    border-bottom: 1px solid #eee;
+  }
+
+  .recipe-intro img {
+    display: none;
+  }
+
+  .ruled-page {
+    background-image: none;
+    padding: 20px;
+  }
+
+  .ruled-page::before {
+    display: none;
+  }
+
+  .book-controls {
+    display: none;
+  }
+
+  .cover-card .page {
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .cover-front {
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+
+  .cover-card .back {
+    display: block;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+  }
+}
