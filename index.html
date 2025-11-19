@@ -16,9 +16,9 @@
 
 <body>
   <main>
-    <ul class="cards">
+    <ul class="cards" style="--total: 10;">
       <!-- Sheet 0: Front=Cover, Back=Recipe 1 Title/Photo -->
-      <li class="card" style="--i: 0; --total: 9;">
+      <li class="card" style="--i: 0;">
         <div class="page">
           <div class="front cover-front">
             <h1>Cocktail<br>Recipes</h1>
@@ -37,7 +37,7 @@
       </li>
 
       <!-- Sheet 1: Front=Recipe 1 Content, Back=Recipe 2 Title/Photo -->
-      <li class="card" style="--i: 1; --total: 9;">
+      <li class="card" style="--i: 1;">
         <div class="page">
           <div class="front ruled-page">
             <div class="recipe-content">
@@ -69,7 +69,7 @@
       </li>
 
       <!-- Sheet 2: Front=Recipe 2 Content, Back=Recipe 3 Title/Photo -->
-      <li class="card" style="--i: 2; --total: 9;">
+      <li class="card" style="--i: 2;">
         <div class="page">
           <div class="front ruled-page">
             <div class="recipe-content">
@@ -101,7 +101,7 @@
       </li>
 
       <!-- Sheet 3: Front=Recipe 3 Content, Back=Recipe 4 Title/Photo -->
-      <li class="card" style="--i: 3; --total: 9;">
+      <li class="card" style="--i: 3;">
         <div class="page">
           <div class="front ruled-page">
             <div class="recipe-content">
@@ -133,7 +133,7 @@
       </li>
 
       <!-- Sheet 4: Front=Recipe 4 Content, Back=Recipe 5 Title/Photo -->
-      <li class="card" style="--i: 4; --total: 9;">
+      <li class="card" style="--i: 4;">
         <div class="page">
           <div class="front ruled-page">
             <div class="recipe-content">
@@ -165,7 +165,7 @@
       </li>
 
       <!-- Sheet 5: Front=Recipe 5 Content, Back=Recipe 6 Title/Photo -->
-      <li class="card" style="--i: 5; --total: 9;">
+      <li class="card" style="--i: 5;">
         <div class="page">
           <div class="front ruled-page">
             <div class="recipe-content">
@@ -197,7 +197,7 @@
       </li>
 
       <!-- Sheet 6: Front=Recipe 6 Content, Back=Recipe 7 Title/Photo -->
-      <li class="card" style="--i: 6; --total: 9;">
+      <li class="card" style="--i: 6;">
         <div class="page">
           <div class="front ruled-page">
             <div class="recipe-content">
@@ -229,7 +229,7 @@
       </li>
 
       <!-- Sheet 7: Front=Recipe 7 Content, Back=Recipe 8 Title/Photo -->
-      <li class="card" style="--i: 7; --total: 9;">
+      <li class="card" style="--i: 7;">
         <div class="page">
           <div class="front ruled-page">
             <div class="recipe-content">
@@ -261,7 +261,7 @@
       </li>
 
       <!-- Sheet 8: Front=Recipe 8 Content, Back=End -->
-      <li class="card" style="--i: 8; --total: 9;">
+      <li class="card" style="--i: 8;">
         <div class="page">
           <div class="front ruled-page">
             <div class="recipe-content">
@@ -280,9 +280,20 @@
                 rubbing around the rim of the glass for a more zesty first sip.</p>
             </div>
           </div>
-          <div class="back plain-page">
-            <!-- End Paper -->
+          <div class="back cover-back">
+            <h1>Made by Rob</h1>
+            <p><svg width="32" height="32" viewBox="0 0 200 200" fill="currentColor">
+                <path class="heart-svg"
+                  d="M20,70 A40,40,0,0,1,100,70 A40,40,0,0,1,180,70 Q180,130,100,190 Q20,130,20,70 Z" />
+              </svg></p>
           </div>
+        </div>
+      </li>
+
+      <!-- Sheet 9: Front=Empty, Back=back cover -->
+      <li class="card" style="--i: 9;">
+        <div class="page">
+
         </div>
       </li>
     </ul>

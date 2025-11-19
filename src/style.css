@@ -7,6 +7,7 @@
   --cover: #161616;
   --accent: #8b5e3c;
   --accent-light: #d4b483;
+  --paper: #fdfbf7;
 }
 
 html {
@@ -114,7 +115,7 @@ main {
   backface-visibility: hidden;
   border-radius: 0 16px 16px 0;
   overflow: hidden;
-  background-color: #fdfbf7;
+  background-color: var(--paper);
   box-sizing: border-box;
 }
 
@@ -137,8 +138,8 @@ main {
 
 /* Ruled Page (Right Side / Front) */
 .ruled-page {
-  background-image: repeating-linear-gradient(#fdfbf7 0px,
-      #fdfbf7 calc(var(--row-height) - 1px),
+  background-image: repeating-linear-gradient(var(--paper) 0px,
+      var(--paper) calc(var(--row-height) - 1px),
       #a0c0e0 var(--row-height));
   padding: var(--row-height) 32px var(--row-height) 40px;
   overflow-y: auto;
@@ -156,7 +157,7 @@ main {
 
 /* Plain Page (Left Side / Back) */
 .plain-page {
-  background-color: #fdfbf7;
+  background-color: var(--paper);
   padding: 32px;
   display: flex;
   flex-direction: column;
@@ -169,8 +170,8 @@ main {
   font-size: 2rem;
   margin-top: 0;
   margin-bottom: 1rem;
-  color: #2c3e50;
-  border-bottom: 2px solid #e0c097;
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent-light);
   padding-bottom: 0.5rem;
 }
 
@@ -210,14 +211,22 @@ main {
 
 .cover-front {
   background-color: var(--cover);
-  color: #ecf0f1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
   border-left: 12px solid var(--accent);
-  box-shadow: inset 10px 0 30px rgba(0, 0, 0, 0.5);
+}
+
+.cover-back {
+  background-color: var(--cover);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border-right: 8px solid var(--accent);
 }
 
 .cover-front h1 {
@@ -231,6 +240,16 @@ main {
 .cover-front p {
   font-style: italic;
   letter-spacing: 2px;
+  color: var(--accent);
+}
+
+.cover-back h1 {
+  font-size: 2rem;
+  color: var(--accent);
+  margin: 8px;
+}
+
+.cover-back p {
   color: var(--accent);
 }
 
@@ -249,9 +268,9 @@ main {
   padding: 10px 20px;
   font-family: 'Playfair Display', serif;
   font-size: 1.2rem;
-  color: #ecf0f1;
-  background-color: #2c3e50;
-  border: 2px solid #ecf0f1;
+  color: var(--accent);
+  background-color: var(--paper);
+  border: 2px solid var(--accent);
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -259,7 +278,7 @@ main {
 }
 
 .book-controls button:hover {
-  background-color: #34495e;
+  background-color: #e0c097;
   transform: translateY(-2px);
   box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4);
 }
@@ -307,7 +326,7 @@ main {
     display: flex;
     flex-direction: column;
     background: white;
-    border-radius: 8px;
+    border-radius: 16px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     overflow: hidden;
   }
@@ -320,7 +339,7 @@ main {
     transform: none;
     backface-visibility: visible;
     border: none;
-    border-radius: 0;
+    border-radius: 16px;
     box-shadow: none;
     padding: 20px;
   }
