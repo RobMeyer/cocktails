@@ -3,6 +3,10 @@
   --cover-height: 600px;
   --spine-width: 20px;
   --row-height: 24px;
+
+  --cover: #161616;
+  --accent: #8b5e3c;
+  --accent-light: #d4b483;
 }
 
 html {
@@ -116,7 +120,7 @@ main {
 
 .front {
   z-index: 2;
-  border-left: 4px solid #d4b483;
+  border-left: 2px solid var(--accent-light);
   box-shadow: inset 10px 0 20px rgba(0, 0, 0, 0.05), 5px 5px 15px rgba(0, 0, 0, 0.15);
 }
 
@@ -124,7 +128,7 @@ main {
   transform: rotateY(180deg);
   z-index: 1;
 
-  border-right: 4px solid #d4b483;
+  border-right: 4px solid var(--accent-light);
   border-left: none;
   border-radius: 16px 0 0 16px;
 
@@ -171,8 +175,8 @@ main {
 }
 
 .recipe-intro img {
-  width: 100%;
-  max-height: 300px;
+  width: 340px;
+  height: 480px;
   object-fit: cover;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -182,7 +186,7 @@ main {
 .recipe-content h3 {
   margin-top: var(--row-height);
   margin-bottom: 0;
-  color: #8b5e3c;
+  color: var(--accent);
   font-size: 1rem;
   line-height: var(--row-height);
   text-transform: uppercase;
@@ -205,27 +209,29 @@ main {
 }
 
 .cover-front {
-  background-color: #2c3e50;
+  background-color: var(--cover);
   color: #ecf0f1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  border-left: 12px solid #1a252f;
+  border-left: 12px solid var(--accent);
   box-shadow: inset 10px 0 30px rgba(0, 0, 0, 0.5);
 }
 
 .cover-front h1 {
   font-size: 3rem;
   margin-bottom: 1rem;
-  border: 4px double #ecf0f1;
+  border: 4px double var(--accent);
   padding: 1rem;
+  color: var(--accent);
 }
 
 .cover-front p {
   font-style: italic;
   letter-spacing: 2px;
+  color: var(--accent);
 }
 
 /* Navigation Controls */
