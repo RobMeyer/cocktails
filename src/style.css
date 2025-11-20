@@ -193,6 +193,11 @@ main {
   text-transform: uppercase;
   letter-spacing: 1px;
   font-weight: bold;
+
+  & span {
+    font-size: 0.8rem;
+    text-transform: none;
+  }
 }
 
 .ingredients {
