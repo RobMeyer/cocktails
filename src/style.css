@@ -133,9 +133,11 @@ main {
   transform: rotateY(180deg);
   z-index: 1;
 
+  border: 1px solid transparent;
   border-right: 4px solid var(--accent-light);
   border-left: none;
-  border-radius: 16px 0 0 16px;
+  border-radius: 28px 0 0 28px;
+  corner-shape: squircle;
 
   box-shadow: inset -10px 0 20px rgba(0, 0, 0, 0.05), -5px 5px 15px rgba(0, 0, 0, 0.15);
 }
