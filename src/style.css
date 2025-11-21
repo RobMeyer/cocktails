@@ -138,21 +138,14 @@ main {
 
 /* Ruled Page (Right Side / Front) */
 .ruled-page {
-  background-image: repeating-linear-gradient(var(--paper) 0px,
+  background-image:
+    linear-gradient(to right, transparent 32px, #e0a0a0 32px, #e0a0a0 34px, transparent 34px),
+    repeating-linear-gradient(var(--paper) 0px,
       var(--paper) calc(var(--row-height) - 1px),
       #a0c0e0 var(--row-height));
+  background-attachment: local;
   padding: var(--row-height) 32px var(--row-height) 40px;
   overflow-y: auto;
-}
-
-.ruled-page::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 32px;
-  bottom: 0;
-  width: 2px;
-  background-color: #e0a0a0;
 }
 
 /* Plain Page (Left Side / Back) */
@@ -168,6 +161,7 @@ main {
 
 .recipe-intro h2 {
   font-size: 2rem;
+  text-wrap: balance;
   margin-top: 0;
   margin-bottom: 1rem;
   color: var(--accent);
@@ -209,6 +203,7 @@ main {
 
 .instructions {
   text-align: justify;
+  text-wrap: balance;
   margin: 0;
   font-size: 1rem;
   line-height: var(--row-height);
