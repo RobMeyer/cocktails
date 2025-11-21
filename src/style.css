@@ -329,7 +329,7 @@ main {
 }
 
 /* Mobile Layout */
-@media (max-width: 600px) {
+@media (max-width: 800px) {
   body {
     perspective: none;
     overflow: auto;
@@ -354,6 +354,9 @@ main {
     width: 100%;
     scroll-snap-align: none;
     view-timeline: none;
+    margin: 0;
+    padding: 0;
+    display: block;
   }
 
   .page {
@@ -365,10 +368,10 @@ main {
     animation: none;
     display: flex;
     flex-direction: column;
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
+    overflow: visible;
   }
 
   .front,
@@ -379,18 +382,27 @@ main {
     transform: none;
     backface-visibility: visible;
     border: none;
-    border-radius: 16px;
-    box-shadow: none;
     padding: 20px;
   }
 
   .front {
-    order: 2;
+    order: unset;
+    background: white;
+    border-radius: 0 0 16px 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 0;
+    margin-bottom: 20px;
+    z-index: 2;
   }
 
   .back {
-    order: 1;
+    order: unset;
+    background: white;
+    border-radius: 16px 16px 0 0;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 0;
     border-bottom: 1px solid #eee;
+    z-index: 1;
   }
 
   .recipe-intro img {
@@ -416,16 +428,23 @@ main {
   }
 
   .cover-front {
-    border-radius: 8px;
+    border-radius: 16px;
     margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: var(--cover);
+    background-image: url('/images/notebook_cover.png');
+    color: var(--accent-light);
   }
 
   .cover-card .back {
     display: block;
-    background: white;
-    border-radius: 8px;
+    background-color: var(--cover);
+    background-image: url('/images/notebook_cover.png');
+    color: var(--accent-light);
+    border-radius: 16px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-top: 20px;
+    margin-bottom: 20px;
   }
 }
 
@@ -516,7 +535,22 @@ main {
   opacity: 0.7;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 800px) {
+
+  main {
+    width: calc(100vw - 40px);
+    min-width: 400px;
+  }
+
+  .cover-front::before,
+  .cover-back::before {
+    height: unset;
+  }
+
+  .cards {
+    gap: unset;
+  }
+
   .notebook-tabs {
     display: none;
     /* Hide tabs on mobile as they might cover content */
