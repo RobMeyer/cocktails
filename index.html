@@ -16,7 +16,7 @@
 
 <body>
   <main>
-    <ul class="cards" style="--total: 10;">
+    <ul class="cards" style="--total: 11;">
       <!-- Sheet 0: Front=Cover, Back=Recipe 1 Title/Photo -->
       <li class="card" style="--i: 0;">
         <div class="page">
@@ -298,8 +298,8 @@
         </div>
       </li>
 
-      <!-- Sheet 7: Front=Recipe 7 Content, Back=Recipe 8 Title/Photo -->
-      <li class="card" style="--i: 7;">
+      <!-- Sheet 8: Front=Recipe 8 Content, Back=Recipe 9 Title/Photo -->
+      <li class="card" style="--i: 8;">
         <div class="page">
           <div class="front ruled-page">
             <div class="recipe-content">
@@ -331,8 +331,8 @@
         </div>
       </li>
 
-      <!-- Sheet 8: Front=Recipe 8 Content, Back=Back Cover -->
-      <li class="card" style="--i: 8;">
+      <!-- Sheet 9: Front=Recipe 9 Content, Back=Back Cover -->
+      <li class="card" style="--i: 9;">
         <div class="page">
           <div class="front ruled-page">
             <div class="recipe-content">
@@ -378,8 +378,8 @@
         </div>
       </li>
 
-      <!-- Sheet 9: No content - needed so we can turn to the back cover -->
-      <li class="card" style="--i: 9;"></li>
+      <!-- Sheet 10: No content - needed so we can turn to the back cover -->
+      <li class="card" style="--i: 10;"></li>
     </ul>
   </main>
 
@@ -398,10 +398,41 @@
     </button>
   </div>
 
+  <nav class="notebook-tabs"></nav>
+
   <script type="text/javascript">
     const main = document.querySelector('main');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
+    const tabsContainer = document.querySelector('.notebook-tabs');
+    const cards = document.querySelectorAll('.card');
+
+    // Generate Tabs
+    const recipes = document.querySelectorAll('.recipe-intro h2');
+    recipes.forEach((recipeTitle, index) => {
+      const card = recipeTitle.closest('.card');
+      const cardIndex = parseInt(card.style.getPropertyValue('--i'));
+
+      // The recipe is on the BACK of this card.
+      // To see the back of card N, we need to scroll to card N+1.
+      const targetCardIndex = cardIndex + 1;
+
+      const tab = document.createElement('button');
+      tab.className = 'tab';
+      tab.innerHTML = `<span>${recipeTitle.innerText}</span>`;
+      tab.setAttribute('aria-label', `Go to ${recipeTitle.innerText}`);
+
+      // Stagger the tabs vertically
+      tab.style.top = `${(index * 24)}px`;
+
+      tab.addEventListener('click', () => {
+        if (cards[targetCardIndex]) {
+          cards[targetCardIndex].scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+
+      tabsContainer.appendChild(tab);
+    });
 
     prevBtn.addEventListener('click', () => {
       main.scrollBy({ top: -window.innerHeight, behavior: 'smooth' });
@@ -410,6 +441,50 @@
     nextBtn.addEventListener('click', () => {
       main.scrollBy({ top: window.innerHeight, behavior: 'smooth' });
     });
+
+    // Hide tabs on Front/Back Cover
+    let tabState = 'VISIBLE'; // FRONT, BACK, VISIBLE
+
+    const updateTabsVisibility = () => {
+      const scrollTop = main.scrollTop;
+      const viewHeight = window.innerHeight;
+      const totalCards = cards.length;
+
+      const isFrontCover = scrollTop < viewHeight * 0.5;
+      const isBackCover = scrollTop > (totalCards - 1.5) * viewHeight;
+
+      let newState = 'VISIBLE';
+      if (isFrontCover) newState = 'FRONT';
+      else if (isBackCover) newState = 'BACK';
+
+      if (newState !== tabState) {
+        if (newState === 'BACK') {
+          tabsContainer.classList.add('no-transition');
+          tabsContainer.classList.add('hidden');
+        } else if (newState === 'FRONT') {
+          tabsContainer.classList.remove('no-transition');
+          tabsContainer.classList.remove('delayed');
+          tabsContainer.classList.add('hidden');
+        } else {
+          // Becoming VISIBLE
+          tabsContainer.classList.remove('hidden');
+          tabsContainer.classList.remove('no-transition');
+
+          if (tabState === 'BACK') {
+            tabsContainer.classList.add('delayed');
+            // Remove delay after transition
+            setTimeout(() => tabsContainer.classList.remove('delayed'), 1000);
+          } else {
+            tabsContainer.classList.remove('delayed');
+          }
+        }
+        tabState = newState;
+      }
+    };
+
+    main.addEventListener('scroll', updateTabsVisibility);
+    window.addEventListener('resize', updateTabsVisibility);
+    updateTabsVisibility(); // Initial check
   </script>
 </body>
 

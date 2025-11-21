@@ -8,6 +8,8 @@
   --accent: #8b5e3c;
   --accent-light: #d4b483;
   --paper: #fdfbf7;
+
+  interpolate-size: allow-keywords;
 }
 
 html {
@@ -144,7 +146,7 @@ main {
       var(--paper) calc(var(--row-height) - 1px),
       #a0c0e0 var(--row-height));
   background-attachment: local;
-  padding: var(--row-height) 32px var(--row-height) 40px;
+  padding: var(--row-height) 60px var(--row-height) 40px;
   overflow-y: auto;
 }
 
@@ -410,5 +412,99 @@ main {
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-top: 20px;
+  }
+}
+
+/* Notebook Tabs */
+.notebook-tabs {
+  position: fixed;
+  top: calc(23px + (100vh - 600px) / 2);
+  left: 50%;
+  margin-left: calc(var(--cover-width) - 40px);
+  height: 100%;
+  width: 0;
+  /* Container doesn't take space */
+  z-index: 2000;
+  pointer-events: none;
+  /* Let clicks pass through the container */
+  transition: opacity 0.3s ease;
+  opacity: 1;
+}
+
+.notebook-tabs.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.notebook-tabs.no-transition {
+  transition: none !important;
+}
+
+.notebook-tabs.delayed {
+  transition-delay: 0.3s;
+}
+
+.tab {
+  position: absolute;
+  left: 0;
+  /* Top is set by JS */
+  width: 40px;
+  height: 25px;
+  background-color: var(--paper);
+  border: 1px solid #bccfe4;
+  border-right: none;
+  border-left: none;
+
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  pointer-events: auto;
+  /* Re-enable clicks on tabs */
+  transition: width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.2s ease, background-color 0.2s;
+  display: flex;
+  align-items: center;
+  padding-left: 12px;
+  overflow: hidden;
+  white-space: nowrap;
+  font-family: 'Playfair Display', serif;
+  color: var(--accent);
+  font-size: 0.9rem;
+  z-index: 2001;
+}
+
+.tab:hover,
+.tab:focus {
+  width: unset;
+  background-color: #fff;
+  /* transform: translateX(4px); */
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
+  outline: none;
+  border-radius: 0 8px 8px 0;
+}
+
+.tab span {
+  opacity: 0;
+  margin-left: 10px;
+}
+
+.tab:hover span,
+.tab:focus span {
+  opacity: 1;
+}
+
+/* Add a little marker for the "rest" state */
+.tab::before {
+  content: '';
+  display: block;
+  min-width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--accent);
+  opacity: 0.7;
+}
+
+@media (max-width: 600px) {
+  .notebook-tabs {
+    display: none;
+    /* Hide tabs on mobile as they might cover content */
   }
 }
