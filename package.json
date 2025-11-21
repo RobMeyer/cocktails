@@ -1,5 +1,5 @@
 {
-  "name": "recipes",
+  "name": "cocktails",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,7 +10,8 @@
   },
   "devDependencies": {
     "typescript": "^5.5.3",
-    "vite": "^5.4.8"
+    "vite": "^5.4.8",
+    "wrangler": "^4.50.0"
   },
   "dependencies": {
     "vite-plugin-minify": "^2.0.0"
