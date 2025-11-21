@@ -261,16 +261,16 @@
             <div class="recipe-intro">
               <h2>Café Reposado</h2>
               <picture>
-                <source srcset="/images/caf_reposado_2x.png 2x, /images/caf_reposado_1x.png 1x">
-                <img src="/images/caf_reposado_1x.png" alt="Café Reposado" width="340" height="480" />
+                <source type="image/avif" srcset="/images/cafe_reposado_2x.avif 2x, /images/cafe_reposado_1x.avif 1x">
+                <img src="/images/cafe_reposado_1x.png" alt="Café Reposado" width="340" height="480" />
               </picture>
             </div>
           </div>
         </div>
       </li>
 
-      <!-- Sheet 7: Front=Recipe 7 Content, Back=Recipe 8 Title/Photo -->
-      <li class="card" style="--i: 7;">
+      <!-- Sheet 8: Front=Recipe 8 Content, Back=Recipe 9 Title/Photo -->
+      <li class="card" style="--i: 8;">
         <div class="page">
           <div class="front ruled-page">
             <div class="recipe-content">
@@ -298,8 +298,8 @@
         </div>
       </li>
 
-      <!-- Sheet 8: Front=Recipe 8 Content, Back=Recipe 9 Title/Photo -->
-      <li class="card" style="--i: 8;">
+      <!-- Sheet 9: Front=Recipe 9 Content, Back=Recipe 10 Title/Photo -->
+      <li class="card" style="--i: 9;">
         <div class="page">
           <div class="front ruled-page">
             <div class="recipe-content">
@@ -331,8 +331,8 @@
         </div>
       </li>
 
-      <!-- Sheet 9: Front=Recipe 9 Content, Back=Back Cover -->
-      <li class="card" style="--i: 9;">
+      <!-- Sheet 10: Front=Recipe 10 Content, Back=Back Cover -->
+      <li class="card" style="--i: 10;">
         <div class="page">
           <div class="front ruled-page">
             <div class="recipe-content">
@@ -378,8 +378,8 @@
         </div>
       </li>
 
-      <!-- Sheet 10: No content - needed so we can turn to the back cover -->
-      <li class="card" style="--i: 10;"></li>
+      <!-- Sheet 11: No content - needed so we can turn to the back cover -->
+      <li class="card" style="--i: 11;"></li>
     </ul>
   </main>
 
@@ -434,13 +434,52 @@
       tabsContainer.appendChild(tab);
     });
 
-    prevBtn.addEventListener('click', () => {
-      main.scrollBy({ top: -window.innerHeight, behavior: 'smooth' });
-    });
+    const focusTabForScroll = (targetScrollTop) => {
+      const viewHeight = window.innerHeight;
+      const cardIndex = Math.round(targetScrollTop / viewHeight);
+      // Recipe 0 is on Card 1. So recipeIndex = cardIndex - 1.
+      const recipeIndex = cardIndex - 1;
+      const tabs = tabsContainer.querySelectorAll('.tab');
 
-    nextBtn.addEventListener('click', () => {
-      main.scrollBy({ top: window.innerHeight, behavior: 'smooth' });
-    });
+      if (recipeIndex >= 0 && recipeIndex < tabs.length) {
+        tabs[recipeIndex].focus();
+      } else {
+        // If cover or back cover, blur so no tab is expanded
+        if (document.activeElement && document.activeElement.classList.contains('tab')) {
+          document.activeElement.blur();
+        }
+      }
+    };
+
+    let targetScrollTop = null;
+    let scrollTimeout = null;
+
+    const handleNavClick = (direction) => {
+      const viewHeight = window.innerHeight;
+      const maxScroll = (cards.length - 1) * viewHeight;
+
+      if (targetScrollTop === null) {
+        // Snap current position to nearest page to start
+        targetScrollTop = Math.round(main.scrollTop / viewHeight) * viewHeight;
+      }
+
+      targetScrollTop += direction * viewHeight;
+
+      // Clamp
+      targetScrollTop = Math.max(0, Math.min(targetScrollTop, maxScroll));
+
+      main.scrollTo({ top: targetScrollTop, behavior: 'smooth' });
+      focusTabForScroll(targetScrollTop);
+
+      // Reset target after animation is likely done so manual scrolling works later
+      if (scrollTimeout) clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        targetScrollTop = null;
+      }, 800);
+    };
+
+    prevBtn.addEventListener('click', () => handleNavClick(-1));
+    nextBtn.addEventListener('click', () => handleNavClick(1));
 
     // Hide tabs on Front/Back Cover
     let tabState = 'VISIBLE'; // FRONT, BACK, VISIBLE
