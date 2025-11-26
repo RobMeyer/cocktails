@@ -6,9 +6,12 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "dev-11ty": "eleventy --serve",
+    "build-11ty": "eleventy"
   },
   "devDependencies": {
+    "@11ty/eleventy": "^3.1.2",
     "typescript": "^5.5.3",
     "vite": "^5.4.8",
     "wrangler": "^4.50.0"

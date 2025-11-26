@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recipes Notebook</title>
+  <link rel="stylesheet" href="/src/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet">
+</head>
+
+<body>
+  <main>
+    <ul class="cards" style="--total: {{ cocktails.length + 1 }};">
+      <!-- Sheet 0: Front=Cover, Back=Recipe 1 Title/Photo -->
+      <li class="card" style="--i: 0;">
+        <div class="page">
+          <div class="front cover-front">
+            <h1>Cocktail<br>Recipes</h1>
+            <p>A Collection of Classics</p>
+          </div>
+          <div class="back plain-page">
+            <div class="recipe-intro">
+              <h2>{{ cocktails[0].title }}</h2>
+              <picture>
+                {% if cocktails[0].cover.avif2x %}
+                <source type="image/avif"
+                  srcset="{{ cocktails[0].cover.avif2x }} 2x, {{ cocktails[0].cover.avif1x }} 1x">
+                {% endif %}
+                {% if cocktails[0].cover.png2x %}
+                <source srcset="{{ cocktails[0].cover.png2x }} 2x, {{ cocktails[0].cover.png1x }} 1x">
+                {% endif %}
+                <img src="{{ cocktails[0].cover.png1x }}" alt="{{ cocktails[0].cover.alt }}" width="340" height="480" />
+              </picture>
+            </div>
+          </div>
+        </div>
+      </li>
+
+      {% for cocktail in cocktails %}
+        {% if not loop.first %}
+        <!-- Sheet {{ loop.index0 }}: Front=Recipe {{ loop.index0 }} Content, Back=Recipe {{ loop.index }} Title/Photo -->
+        <li class="card" style="--i: {{ loop.index0 }};">
+          <div class="page">
+            <div class="front ruled-page">
+              <div class="recipe-content">
+                <h3>Ingredients {% if cocktails[loop.index0 - 1].servings %}<span>({{ cocktails[loop.index0 - 1].servings }})</span>{% endif %}</h3>
+                <ul class="ingredients">
+                  {% for ingredient in cocktails[loop.index0 - 1].ingredients %}
+                  <li>{{ ingredient | safe }}</li>
+                  {% endfor %}
+                </ul>
+                <h3>Instructions</h3>
+                {% for instruction in cocktails[loop.index0 - 1].instructions %}
+                <p class="instructions">{{ instruction | safe }}</p>
+                {% endfor %}
+              </div>
+            </div>
+            <div class="back plain-page">
+              <div class="recipe-intro">
+                <h2>{{ cocktail.title }}</h2>
+                <picture>
+                  {% if cocktail.cover.avif2x %}
+                  <source type="image/avif"
+                    srcset="{{ cocktail.cover.avif2x }} 2x, {{ cocktail.cover.avif1x }} 1x">
+                  {% endif %}
+                  {% if cocktail.cover.png2x %}
+                  <source srcset="{{ cocktail.cover.png2x }} 2x, {{ cocktail.cover.png1x }} 1x">
+                  {% endif %}
+                  <img src="{{ cocktail.cover.png1x }}" alt="{{ cocktail.cover.alt }}" width="340" height="480" />
+                </picture>
+              </div>
+            </div>
+          </div>
+        </li>
+        {% endif %}
+      {% endfor %}
+
+      <!-- Sheet {{ cocktails.length }}: Front=Recipe {{ cocktails.length }} Content, Back=Back Cover -->
+      <li class="card" style="--i: {{ cocktails.length }};">
+        <div class="page">
+          <div class="front ruled-page">
+            <div class="recipe-content">
+              <h3>Ingredients {% if cocktails[cocktails.length - 1].servings %}<span>({{ cocktails[cocktails.length - 1].servings }})</span>{% endif %}</h3>
+              <ul class="ingredients">
+                {% for ingredient in cocktails[cocktails.length - 1].ingredients %}
+                <li>{{ ingredient | safe }}</li>
+                {% endfor %}
+              </ul>
+              <h3>Instructions</h3>
+              {% for instruction in cocktails[cocktails.length - 1].instructions %}
+              <p class="instructions">{{ instruction | safe }}</p>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="back cover-back">
+            <h1>Made by Rob</h1>
+            <p><svg width="32" height="32" viewBox="0 0 200 200" fill="currentColor">
+                <path class="heart-svg"
+                  d="M20,70 A40,40,0,0,1,100,70 A40,40,0,0,1,180,70 Q180,130,100,190 Q20,130,20,70 Z" />
+              </svg></p>
+          </div>
+        </div>
+      </li>
+
+      <!-- Sheet {{ cocktails.length + 1 }}: No content - needed so we can turn to the back cover -->
+      <li class="card" style="--i: {{ cocktails.length + 1 }};"></li>
+    </ul>
+  </main>
+
+  <div class="book-controls">
+    <button id="prevBtn" aria-label="Previous Page">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+    </button>
+    <button id="nextBtn" aria-label="Next Page">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+    </button>
+  </div>
+
+  <nav class="notebook-tabs"></nav>
+
+  <script type="text/javascript">
+    const main = document.querySelector('main');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const tabsContainer = document.querySelector('.notebook-tabs');
+    const cards = document.querySelectorAll('.card');
+
+    // Generate Tabs
+    const recipes = document.querySelectorAll('.recipe-intro h2');
+    recipes.forEach((recipeTitle, index) => {
+      const card = recipeTitle.closest('.card');
+      const cardIndex = parseInt(card.style.getPropertyValue('--i'));
+
+      // The recipe is on the BACK of this card.
+      // To see the back of card N, we need to scroll to card N+1.
+      const targetCardIndex = cardIndex + 1;
+
+      const tab = document.createElement('button');
+      tab.className = 'tab';
+      tab.innerHTML = `<span>${recipeTitle.innerText}</span>`;
+      tab.setAttribute('aria-label', `Go to ${recipeTitle.innerText}`);
+
+      // Stagger the tabs vertically
+      tab.style.top = `${(index * 24)}px`;
+
+      tab.addEventListener('click', () => {
+        if (cards[targetCardIndex]) {
+          cards[targetCardIndex].scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+
+      tabsContainer.appendChild(tab);
+    });
+
+    const focusTabForScroll = (targetScrollTop) => {
+      const viewHeight = window.innerHeight;
+      const cardIndex = Math.round(targetScrollTop / viewHeight);
+      // Recipe 0 is on Card 1. So recipeIndex = cardIndex - 1.
+      const recipeIndex = cardIndex - 1;
+      const tabs = tabsContainer.querySelectorAll('.tab');
+
+      if (recipeIndex >= 0 && recipeIndex < tabs.length) {
+        tabs[recipeIndex].focus();
+      } else {
+        // If cover or back cover, blur so no tab is expanded
+        if (document.activeElement && document.activeElement.classList.contains('tab')) {
+          document.activeElement.blur();
+        }
+      }
+    };
+
+    let targetScrollTop = null;
+    let scrollTimeout = null;
+
+    const handleNavClick = (direction) => {
+      const viewHeight = window.innerHeight;
+      const maxScroll = (cards.length - 1) * viewHeight;
+
+      if (targetScrollTop === null) {
+        // Snap current position to nearest page to start
+        targetScrollTop = Math.round(main.scrollTop / viewHeight) * viewHeight;
+      }
+
+      targetScrollTop += direction * viewHeight;
+
+      // Clamp
+      targetScrollTop = Math.max(0, Math.min(targetScrollTop, maxScroll));
+
+      main.scrollTo({ top: targetScrollTop, behavior: 'smooth' });
+      focusTabForScroll(targetScrollTop);
+
+      // Reset target after animation is likely done so manual scrolling works later
+      if (scrollTimeout) clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        targetScrollTop = null;
+      }, 800);
+    };
+
+    prevBtn.addEventListener('click', () => handleNavClick(-1));
+    nextBtn.addEventListener('click', () => handleNavClick(1));
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') {
+        handleNavClick(-1);
+      } else if (e.key === 'ArrowRight') {
+        handleNavClick(1);
+      }
+    });
+
+    // Hide tabs on Front/Back Cover
+    let tabState = 'VISIBLE'; // FRONT, BACK, VISIBLE
+
+    const updateTabsVisibility = () => {
+      const scrollTop = main.scrollTop;
+      const viewHeight = window.innerHeight;
+      const totalCards = cards.length;
+
+      const isFrontCover = scrollTop < viewHeight * 0.5;
+      const isBackCover = scrollTop > (totalCards - 1.5) * viewHeight;
+
+      let newState = 'VISIBLE';
+      if (isFrontCover) newState = 'FRONT';
+      else if (isBackCover) newState = 'BACK';
+
+      if (newState !== tabState) {
+        if (newState === 'BACK') {
+          tabsContainer.classList.add('no-transition');
+          tabsContainer.classList.add('hidden');
+        } else if (newState === 'FRONT') {
+          tabsContainer.classList.remove('no-transition');
+          tabsContainer.classList.remove('delayed');
+          tabsContainer.classList.add('hidden');
+        } else {
+          // Becoming VISIBLE
+          tabsContainer.classList.remove('hidden');
+          tabsContainer.classList.remove('no-transition');
+
+          if (tabState === 'BACK') {
+            tabsContainer.classList.add('delayed');
+            // Remove delay after transition
+            setTimeout(() => tabsContainer.classList.remove('delayed'), 1000);
+          } else {
+            tabsContainer.classList.remove('delayed');
+          }
+        }
+        tabState = newState;
+      }
+    };
+
+    main.addEventListener('scroll', updateTabsVisibility);
+    window.addEventListener('resize', updateTabsVisibility);
+    updateTabsVisibility(); // Initial check
+  </script>
+</body>
+
+</html>
