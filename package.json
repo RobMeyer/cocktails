@@ -7,13 +7,19 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
+    "compile-ts": "tsc src/main.ts --outDir _site/src --module es2015 --target es2015 --skipLibCheck",
+    "compile-ts-prod": "tsc src/main.ts --outDir .tmp --module es2015 --target es2015 --skipLibCheck",
+    "predev-11ty": "npm run compile-ts",
     "dev-11ty": "eleventy --serve",
-    "build-11ty": "NODE_ENV=production eleventy"
+    "prebuild-11ty": "npm run compile-ts-prod",
+    "build-11ty": "NODE_ENV=production eleventy",
+    "postbuild-11ty": "rm -rf .tmp"
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.1.2",
     "clean-css": "^5.3.3",
     "html-minifier": "^4.0.0",
+    "terser": "^5.44.1",
     "typescript": "^5.5.3",
     "vite": "^5.4.8",
     "wrangler": "^4.50.0"

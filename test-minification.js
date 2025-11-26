@@ -77,14 +77,50 @@ if (hasInlineCSS) {
     }
 }
 
-// Test 6: HTML size should be reasonable (≤ 25KB for single-file build)
+// Test 6: Should have inline <script> tag
+const hasInlineJS = html.includes('<script>');
 test(
-    'HTML size should be ≤ 25KB',
-    htmlSize <= 25000,
+    'Should have inline <script> tag',
+    hasInlineJS,
+    'No inline <script> tag found'
+);
+
+// Test 7: Should not have external script tag
+const hasExternalJS = html.includes('<script type="module" src=');
+test(
+    'Should not have external script tag',
+    !hasExternalJS,
+    'Found external script tag'
+);
+
+// Test 8: Inline JS should be minified
+if (hasInlineJS) {
+    const scriptMatch = html.match(/<script>([\s\S]*?)<\/script>/);
+    if (scriptMatch) {
+        const inlineJS = scriptMatch[1];
+        const hasWhitespaceInJS = /\n\s+/g.test(inlineJS);
+        const hasComments = /\/\/|\/\*/g.test(inlineJS);
+        test(
+            'Inline JS should be minified (no whitespace)',
+            !hasWhitespaceInJS,
+            'Found whitespace/newlines in inline JS'
+        );
+        test(
+            'Inline JS should be minified (no comments)',
+            !hasComments,
+            'Found comments in inline JS'
+        );
+    }
+}
+
+// Test 9: HTML size should be reasonable (≤ 30KB for single-file build with inlined JS)
+test(
+    'HTML size should be ≤ 30KB',
+    htmlSize <= 30000,
     `HTML size is ${htmlSize} bytes`
 );
 
-// Test 7: External CSS file should not exist or be ignored in production
+// Test 10: External CSS file should not exist or be ignored in production
 const cssExists = fs.existsSync(STYLE_CSS);
 if (cssExists) {
     console.log(`⚠️  WARNING: External CSS file exists at ${STYLE_CSS}`);
