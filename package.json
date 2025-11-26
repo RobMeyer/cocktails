@@ -8,10 +8,12 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "dev-11ty": "eleventy --serve",
-    "build-11ty": "eleventy"
+    "build-11ty": "NODE_ENV=production eleventy"
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.1.2",
+    "clean-css": "^5.3.3",
+    "html-minifier": "^4.0.0",
     "typescript": "^5.5.3",
     "vite": "^5.4.8",
     "wrangler": "^4.50.0"
