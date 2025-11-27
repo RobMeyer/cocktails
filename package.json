@@ -9,8 +9,9 @@
     "predev": "npm run compile-ts",
     "dev": "eleventy --serve",
     "prebuild": "npm run compile-ts-prod",
-    "build": "NODE_ENV=production eleventy",
-    "postbuild": "rm -rf .tmp"
+    "build": "rm -rf _site &&NODE_ENV=production eleventy",
+    "postbuild": "rm -rf .tmp",
+    "deploy": "npx wrangler deploy --assets=./_site"
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.1.2",

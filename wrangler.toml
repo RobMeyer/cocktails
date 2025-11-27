@@ -1,8 +1,3 @@
 # Top-level configuration
 name = "cocktails"
 compatibility_date = "2022-07-12"
-
-# Cloudflare Pages configuration
-[pages.build]
-command = "npm run build"
-destination = "_site"

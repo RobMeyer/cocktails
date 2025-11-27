@@ -16,6 +16,9 @@ export default function (eleventyConfig) {
     // Passthrough copy for images (always needed)
     eleventyConfig.addPassthroughCopy({ "public/images": "images" });
 
+    // Passthrough copy for fonts (always needed)
+    eleventyConfig.addPassthroughCopy({ "public/fonts": "fonts" });
+
     // Watch CSS for changes
     eleventyConfig.addWatchTarget("./src/style.css");
 
