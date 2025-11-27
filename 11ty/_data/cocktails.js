@@ -21,7 +21,8 @@ export default [
     {
         title: "Cherry Fizz",
         cover: {
-            png2x: "/images/cherry_fizz_2x.png",
+            avif2x: "/images/cherry_fizz_2x.avif",
+            avif1x: "/images/cherry_fizz_1x.avif",
             png1x: "/images/cherry_fizz_1x.png",
             alt: "Cherry Fizz"
         },
@@ -45,6 +46,7 @@ export default [
         title: "La Bicyclette",
         cover: {
             avif2x: "/images/aged_la_bicyclette_2x.avif",
+            avif1x: "/images/aged_la_bicyclette_1x.avif",
             png1x: "/images/aged_la_bicyclette_1x.png",
             alt: "Photograph of an amber cocktail in a coupe glass, beside a countertop oak aging barrel"
         },
@@ -62,7 +64,8 @@ export default [
     {
         title: "Rob-Fashioned",
         cover: {
-            png2x: "/images/rob_fashioned_2x.png",
+            avif2x: "/images/rob_fashioned_2x.avif",
+            avif1x: "/images/rob_fashioned_1x.avif",
             png1x: "/images/rob_fashioned_1x.png",
             alt: "Rob Fashioned"
         },
@@ -82,7 +85,8 @@ export default [
     {
         title: "Golden Ratio",
         cover: {
-            png2x: "/images/golden_ratio_2x.png",
+            avif2x: "/images/golden_ratio_2x.avif",
+            avif1x: "/images/golden_ratio_1x.avif",
             png1x: "/images/golden_ratio_1x.png",
             alt: "Golden Ratio"
         },
