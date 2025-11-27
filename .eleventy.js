@@ -1,4 +1,4 @@
-import htmlMinifier from "html-minifier";
+import minifyHtml from "@minify-html/node";
 import CleanCSS from "clean-css";
 import { minify } from "terser";
 import fs from "fs";
@@ -45,12 +45,20 @@ export default function (eleventyConfig) {
     // Add HTML minification transform
     eleventyConfig.addTransform("htmlmin", function (content) {
         if (process.env.NODE_ENV === "production" && (this.page.outputPath || "").endsWith(".html")) {
-            let minified = htmlMinifier.minify(content, {
-                useShortDoctype: true,
-                removeComments: true,
-                collapseWhitespace: true,
-            });
-            return minified;
+            const cfg = {
+                do_not_minify_doctype: true,
+                ensure_spec_compliant_unquoted_attribute_values: true,
+                keep_closing_tags: true,
+                keep_html_and_head_opening_tags: true,
+                keep_spaces_between_attributes: true,
+                keep_comments: false,
+                minify_css: true,
+                minify_js: true,
+                remove_bangs: false,
+                remove_processing_instructions: false,
+            };
+            const minified = minifyHtml.minify(Buffer.from(content), cfg);
+            return minified.toString("utf8");
         }
         return content;
     });

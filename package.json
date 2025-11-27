@@ -4,21 +4,22 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "clean": "rm -rf _site .tmp",
     "compile-ts": "tsc src/main.ts --outDir _site/src --module es2015 --target es2015 --skipLibCheck",
     "compile-ts-prod": "tsc src/main.ts --outDir .tmp --module es2015 --target es2015 --skipLibCheck",
     "predev": "npm run compile-ts",
     "dev": "eleventy --serve",
     "prebuild": "npm run compile-ts-prod",
-    "build": "rm -rf _site &&NODE_ENV=production eleventy",
-    "postbuild": "rm -rf .tmp",
-    "deploy": "npx wrangler deploy --assets=./_site"
+    "build": "rm -rf _site && NODE_ENV=production eleventy",
+    "postbuild": "rm -rf .tmp"
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.1.2",
     "clean-css": "^5.3.3",
-    "html-minifier": "^4.0.0",
     "terser": "^5.44.1",
-    "typescript": "^5.5.3",
-    "wrangler": "^4.50.0"
+    "typescript": "^5.5.3"
+  },
+  "dependencies": {
+    "@minify-html/node": "^0.18.1"
   }
 }
