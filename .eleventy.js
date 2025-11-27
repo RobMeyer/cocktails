@@ -11,7 +11,6 @@ export default function (eleventyConfig) {
     // In production, these are inlined so we don't need them
     if (!isProd) {
         eleventyConfig.addPassthroughCopy("src/style.css");
-        eleventyConfig.addPassthroughCopy("src/vite-env.d.ts");
     }
 
     // Passthrough copy for images (always needed)
