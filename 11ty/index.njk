@@ -8,7 +8,7 @@
   {% if env == "production" %}
   <style>
     {% set css %}{% getUiCss %}{% endset %}
-    {{ css | cssmin | safe }}
+    {{ css | safe }}
   </style>
   {% else %}
   <link rel="stylesheet" href="/src/style.css">

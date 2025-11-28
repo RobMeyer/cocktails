@@ -1,5 +1,4 @@
 import minifyHtml from "@minify-html/node";
-import CleanCSS from "clean-css";
 import { minify } from "terser";
 import fs from "fs";
 import path from "path";
@@ -27,11 +26,6 @@ export default function (eleventyConfig) {
 
     // Add env global data
     eleventyConfig.addGlobalData("env", process.env.NODE_ENV || "development");
-
-    // Add CSS minification filter
-    eleventyConfig.addFilter("cssmin", function (code) {
-        return new CleanCSS({}).minify(code).styles;
-    });
 
     // Add JS minification filter
     eleventyConfig.addFilter("jsmin", async function (code) {
