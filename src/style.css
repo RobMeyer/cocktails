@@ -191,6 +191,10 @@
   --accent-light: #d4b483;
   --paper: #fdfbf7;
 
+  --notebook-cover: image-set(url('/images/notebook_cover.avif') type('image/avif'),
+      url('/images/notebook_cover.png') type('image/png'));
+
+
   interpolate-size: allow-keywords;
 }
 
@@ -417,7 +421,7 @@ main {
 }
 
 .cover-front::before {
-  background: url('/images/notebook_cover.png') repeat;
+  background: var(--notebook-cover) repeat;
   content: '';
   position: absolute;
   top: 0;
@@ -439,7 +443,7 @@ main {
 }
 
 .cover-back::before {
-  background: url('/images/notebook_cover.png') repeat;
+  background: var(--notebook-cover) repeat;
   content: '';
   position: absolute;
   top: 0;
